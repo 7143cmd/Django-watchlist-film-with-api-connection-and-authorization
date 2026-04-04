@@ -1,17 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from .forms import RegisterForm, LoginForm
+from django.contrib.auth.models import User
 
 #User = get_user_model()
 
 def home(request):
     return render(request, 'main/index.html')
+
 def register(request):
-    form = RegisterForm()
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
 
-    data = {"form": form}
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = RegisterForm()
 
-    return render(request, 'main/register.html', data)
+    return render(request, 'main/register.html', {"form": form})
+
 def login(request):
     form = LoginForm()
 
