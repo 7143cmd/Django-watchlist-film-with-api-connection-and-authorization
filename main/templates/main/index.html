@@ -3,91 +3,40 @@
 
 {% block content %}
 
-<div class="layout">
+<div class="container-fluid">
+    <div class="row min-vh-100">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-inner">
-            <div class="logo-wrap">
-                <!-- <img src="{% static 'favicon.ico' %}" class="logo" alt="Logo">  -->
-                <span class="logo-text">Ciné<em>ma</em></span>
+        <div class="col-2 bg-dark text-white d-flex flex-column align-items-center py-4">
+
+            <h4 class="mb-4">Cinéma</h4>
+
+            <div class="nav flex-column text-center w-100">
+                <a href="#" class="nav-link text-light">My Profile</a>
+                <a href="#" class="nav-link text-light">About Us</a>
+                <a href="#" class="nav-link text-light">Random Movie</a>
             </div>
-
-            <nav class="nav">
-                <a href="#" class="nav-link">
-                    <span class="nav-icon">◈</span>
-                    My Profile
-                </a>
-                <a href="#" class="nav-link">
-                    <span class="nav-icon">◉</span>
-                    About Us
-                </a>
-                <a href="#" class="nav-link">
-                    <span class="nav-icon">◈</span>
-                    Random Movie
-                </a>
-            </nav>
 
         </div>
-    </aside>
 
-    <!-- Main content -->
-    <main class="main">
+        <div class="col-10 bg-secondary text-white">
 
-        <!-- Top bar -->
-        <header class="topbar">
-            <div class="search-wrap">
-                <span class="search-icon">⌕</span>
-                <input type="text" placeholder="Search films, directors, genres…" class="search">
+            <div class="d-flex justify-content-between align-items-center p-4">
+
+                <input type="text" class="form-control w-50" placeholder="Search movies...">
+
+                <div class="text-right pr-5">
+                    <h3 class="mb-0">Watchlist</h3>
+                </div>
+
             </div>
-            <div class="watchlist-badge">
-                <span class="badge-icon">◧</span>
-                Watchlist
-                <span class="badge-count">4</span>
+
+            <div class="p-4">
+
             </div>
-        </header>
 
-        <!-- Movie cards -->
-        <section class="cards-section">
-            <h2 class="section-title">Continue Watching</h2>
-            <div class="cards-row">
-                <div class="card">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #1a0a2e, #3d1a6e);"></div>
-                    <div class="card-info">
-                        <span class="card-title">2001: A Space Odyssey</span>
-                        <span class="card-meta">Kubrick · 1968</span>
-                    </div>
-                    <div class="card-progress"><div class="progress-fill" style="width:62%"></div></div>
-                </div>
-                <div class="card">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #0a1a0e, #1a4a2e);"></div>
-                    <div class="card-info">
-                        <span class="card-title">Parasite</span>
-                        <span class="card-meta">Bong Joon-ho · 2019</span>
-                    </div>
-                    <div class="card-progress"><div class="progress-fill" style="width:30%"></div></div>
-                </div>
-                <div class="card">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #1a0a0a, #4a1a1a);"></div>
-                    <div class="card-info">
-                        <span class="card-title">The Godfather</span>
-                        <span class="card-meta">Coppola · 1972</span>
-                    </div>
-                    <div class="card-progress"><div class="progress-fill" style="width:80%"></div></div>
-                </div>
-                <div class="card">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #0a0e1a, #1a2a4a);"></div>
-                    <div class="card-info">
-                        <span class="card-title">Mulholland Drive</span>
-                        <span class="card-meta">Lynch · 2001</span>
-                    </div>
-                    <div class="card-progress"><div class="progress-fill" style="width:15%"></div></div>
-                </div>
-            </div>
-        </section>
+        </div>
 
-
-    </main>
+    </div>
 </div>
 
 {% endblock %}
