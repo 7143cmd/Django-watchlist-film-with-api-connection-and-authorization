@@ -1,13 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
-class User_Data(models.Model):
-    nickname = models.CharField('Nickname', max_length = 20)
-    email = models.CharField('email', max_length = 30)
-    password = models.CharField('password', max_length = 16)
+class CustomUser(AbstractUser):
+    username = models.CharField(max_length=20, unique=True)
+    email = models.EmailField(unique=True)
 
     def __str__(self):
-        return self.nickname
+        return self.username
     
 #class Watchlist(models.Model):
 
