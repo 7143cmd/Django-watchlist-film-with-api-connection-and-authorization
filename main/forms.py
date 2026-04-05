@@ -1,12 +1,19 @@
 from .models import CustomUser
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput, Form, PasswordInput, CharField
 
 class RegisterForm(ModelForm):
     class Meta:
         model = CustomUser
         fields = ["username", "email", "password"]
 
+        labels = {
+            "username": "",
+            "email": "",
+            "password": "",
+        }
+
         widgets = {
+
             "username": TextInput(attrs={
                 'class': 'form-control mb-3',
                 'placeholder': "username"
@@ -15,24 +22,26 @@ class RegisterForm(ModelForm):
                 'class': 'form-control mb-3',
                 'placeholder': "email"
             }),
-            "password": TextInput(attrs={
+            "password": PasswordInput(attrs={
                 'class': 'form-control mb-3',
                 'placeholder': "password"
             })
         }
 
-class LoginForm(ModelForm):
-    class Meta:
-        model = CustomUser
-        fields = ["username", "password"]
+class LoginForm(Form):
+    username = CharField(
+        label = '',
+        max_length=20,
+        widget=TextInput(attrs={
+            'class': 'form-control mb-3',
+            'placeholder': 'username'
+        })
+    )
 
-        widgets = {
-            "username": TextInput(attrs={
-                'class': 'form-control mb-3',
-                'placeholder': "username"
-            }),
-            "password": TextInput(attrs={
-                'class': 'form-control mb-3',
-                'placeholder': "password"
-            })
-        }
+    password = CharField(
+        label = '',
+        widget=PasswordInput(attrs={
+            'class': 'form-control mb-3',
+            'placeholder': 'password'
+        })
+    )
