@@ -1,3 +1,5 @@
+import requests
+from random import randint, choice
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -50,5 +52,26 @@ def login(request):
         form = LoginForm()
 
     return render(request, 'main/login.html', {"form": form})
+
+def rand_movie(request):                       #https://api.imdbapi.dev/titles?startYear=2000&endYear=2010&minVoteCount=1000&minAggregateRating=5&sortBy=SORT_BY_POPULARITY
+
+    start_year = randint(1950, 1990)
+    end_year = randint(1991, 2025)
+    agregate = randint(0, 7)
+
+    url = f'https://api.imdbapi.dev/titles?startYear={start_year}&endYear={end_year}&minVoteCount=1000&minAggregateRating={agregate}'
+
+    response = requests.get(url)
+    data = response.json()
+
+    movies = data.get('titles', [])
+
+    if not movies:
+        return redirect('')
+
+    movie = choice(movies)
+    imdb_id = movie['id']
+
+    return redirect(f'https://www.imdb.com/title/{imdb_id}')
 
 # Create your views here.
