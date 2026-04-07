@@ -79,12 +79,27 @@ def search_mov(request, query):
     results = []
 
     if query:
-        url = f"https://api.imdbapi.dev/search/titles?query=fury"
+        url = f"https://api.imdbapi.dev/search/titles?query={query}"
 
         try:
             response = requests.get(url)
             data = response.json()
-            results = data.get('titles', [])
+
+            movies = data.get('titles', [])
+
+            for movie in movies:
+                rating = movie.get('rating')
+
+                if not rating:
+                    continue
+
+                vote_count = rating.get('voteCount')
+
+                if not vote_count or vote_count < 1000:
+                    continue
+
+                results.append(movie)
+
         except Exception:
             results = []
 
