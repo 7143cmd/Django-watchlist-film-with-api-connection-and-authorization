@@ -25,13 +25,26 @@
         <div class="col-md-10 p-4">
 
             <!-- 🔎 Search bar -->
-            <form class="mb-4">
+            <form id="searchForm" class="w-50 h-80">
                 <input 
                     type="text" 
-                    class="form-control form-control-lg" 
+                    id="searchInput"
+                    class="form-control" 
                     placeholder="Search movies..."
                 >
             </form>
+
+            <script>
+            document.getElementById('searchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const query = document.getElementById('searchInput').value;
+
+                if (query) {
+                    window.location.href = `/search/${query}/`;
+                }
+            });
+            </script>
 
             <!-- 🎞 Grid -->
             <div class="row">
@@ -43,13 +56,7 @@
 
                         <div class="card-body d-flex flex-column">
 
-                            <!-- Title -->
-                            <h5 class="card-title">Movie Title</h5>
-
-                            <!-- Main info -->
-                            <p class="card-text mb-2">
-                                2024 • Action • 2h 15m
-                            </p>
+                            {{results}}
 
                             <!-- Spacer -->
                             <div class="mt-auto">

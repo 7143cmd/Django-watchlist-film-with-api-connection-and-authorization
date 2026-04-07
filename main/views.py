@@ -74,7 +74,22 @@ def rand_movie(request):                       #https://api.imdbapi.dev/titles?s
 
     return redirect(f'https://www.imdb.com/title/{imdb_id}')
 
+@login_required
 def search_mov(request, query):
-    return render(request, 'main/search.html')
+    results = []
 
+    if query:
+        url = f"https://api.imdbapi.dev/search/titles?query=fury"
+
+        try:
+            response = requests.get(url)
+            data = response.json()
+            results = data.get('titles', [])
+        except Exception:
+            results = []
+
+    return render(request, 'main/search.html', {
+        'results': results,
+        'query': query
+    })
 # Create your views here.

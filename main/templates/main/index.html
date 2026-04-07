@@ -21,7 +21,26 @@
 
             <div class="d-flex justify-content-between align-items-center p-4">
 
-                <input type="text" class="form-control w-50" placeholder="Search movies...">
+                <form id="searchForm" class="w-50">
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        class="form-control" 
+                        placeholder="Search movies..."
+                    >
+                </form>
+
+                <script>
+                document.getElementById('searchForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const query = document.getElementById('searchInput').value;
+
+                    if (query) {
+                        window.location.href = `/search/${query}/`;
+                    }
+                });
+                </script>
 
                 <div class="text-right pr-5">
                     <h3 class="mb-0">Watchlist</h3>
