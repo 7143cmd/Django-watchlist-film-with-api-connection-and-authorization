@@ -74,4 +74,7 @@ def rand_movie(request):                       #https://api.imdbapi.dev/titles?s
 
     return redirect(f'https://www.imdb.com/title/{imdb_id}')
 
+def search_mov(request, query):
+    return render(request, 'main/search.html')
+
 # Create your views here.

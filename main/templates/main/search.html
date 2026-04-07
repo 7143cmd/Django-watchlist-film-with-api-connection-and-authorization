@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- 🔍 Sidebar -->
+        <div class="col-md-2 bg-dark text-white min-vh-100 p-3">
+            <h5 class="mb-4">Menu</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a href="/" class="nav-link text-white">Home</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-white">Movies</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-white">Series</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 🎬 Main Content -->
+        <div class="col-md-10 p-4">
+
+            <!-- 🔎 Search bar -->
+            <form class="mb-4">
+                <input 
+                    type="text" 
+                    class="form-control form-control-lg" 
+                    placeholder="Search movies..."
+                >
+            </form>
+
+            <!-- 🎞 Grid -->
+            <div class="row">
+
+                <!-- 🔹 Movie Card -->
+                {% for i in "123456789" %}
+                <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+                    <div class="card bg-dark text-white h-100 shadow">
+
+                        <div class="card-body d-flex flex-column">
+
+                            <!-- Title -->
+                            <h5 class="card-title">Movie Title</h5>
+
+                            <!-- Main info -->
+                            <p class="card-text mb-2">
+                                2024 • Action • 2h 15m
+                            </p>
+
+                            <!-- Spacer -->
+                            <div class="mt-auto">
+
+                                <!-- Buttons -->
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <!-- Info -->
+                                    <button class="btn btn-outline-light btn-sm">
+                                        Details
+                                    </button>
+
+                                    <!-- Bookmark -->
+                                    <button class="btn btn-outline-warning btn-sm">
+                                        🔖
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
