@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <form id="searchForm" class="w-50 h-80">
+        <input 
+            type="text" 
+            id="searchInput"
+            class="form-control" 
+            placeholder="Search movies..."
+        >
+    </form>
+
+    <script>
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const query = document.getElementById('searchInput').value;
+
+        if (query) {
+            window.location.href = `/search/${query}/`;
+        }
+    });
+    </script>
+
+    <h3>🔥 Best Series</h3>
+    <div class="row">
+        {% for s in best %}
+        <div class="col-md-3">
+            <div class="card bg-dark text-white mb-3">
+                <img src="{{ s.primaryImage.url }}">
+                <div class="card-body">
+                    <h6>{{ s.primaryTitle }}</h6>
+                    <div class="d-flex justify-content-between">
+                        <a href="https://www.imdb.com/title/{{ movie.id }}/" 
+                        target="_blank"
+                        class="btn btn-outline-light btn-sm">
+                            Details
+                        </a>
+
+                        <button class="btn btn-outline-warning btn-sm">
+                            🔖
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h3>📺 Popular</h3>
+    <div class="row">
+        {% for s in popular %}
+        <div class="col-md-3">
+            <div class="card bg-dark text-white mb-3">
+                <img src="{{ s.primaryImage.url }}">
+                <div class="card-body">
+                    <h6>{{ s.primaryTitle }}</h6>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h3>🎲 Random</h3>
+    <div class="row">
+        {% for s in randoms %}
+        <div class="col-md-3">
+            <div class="card bg-dark text-white mb-3">
+                <img src="{{ s.primaryImage.url }}">
+                <div class="card-body">
+                    <h6>{{ s.primaryTitle }}</h6>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

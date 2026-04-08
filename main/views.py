@@ -1,12 +1,30 @@
 import requests
-from random import randint, choice
+from random import randint, choice, sample
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, LoginForm
 
-#User = get_user_model()
+API_URL = "https://api.imdbapi.dev/titles"
 
+######
+
+def get_titles(params):
+    response = requests.get(API_URL, params=params)
+    data = response.json().get("titles", [])
+
+    filtered = [
+        t for t in data
+        if t.get("rating") and t["rating"].get("voteCount", 0) >= 10000
+    ]
+
+    return filtered
+
+
+def get_random(items, cnt=4):
+    return sample(items, min(len(items), cnt))
+
+######
 @login_required(login_url='login')
 def home(request):
     return render(request, 'main/index.html')
@@ -106,5 +124,59 @@ def search_mov(request, query):
     return render(request, 'main/search.html', {
         'results': results,
         'query': query
+    })
+
+@login_required
+def movies(request):
+
+    best = get_titles({
+        "minAggregateRating": 8.9,
+        "types": "MOVIE",
+        "limit": 50
+    })
+
+    popular = get_titles({
+        "sortBy": "SORT_BY_POPULARITY",
+        "types": "MOVIE",
+        "limit": 50
+    })
+
+    randoms = get_titles({
+        "startYear": 2000,
+        "endYear": 2010,
+        "types": "MOVIE",
+        "limit": 50
+    })
+
+    return render(request, "main/movies.html", {
+        "best": get_random(best),
+        "popular": get_random(popular),
+        "randoms": get_random(randoms),
+    })
+
+@login_required
+def series(request):
+    best = get_titles({
+        "minAggregateRating": 9.2,
+        "types": "TV_SERIES",
+        "limit": 50
+    })
+
+    popular = get_titles({
+        "sortBy": "SORT_BY_POPULARITY",
+        "types": "TV_SERIES",
+        "limit": 50
+    })
+
+    randoms = get_titles({
+        "startYear": 2010,
+        "types": "TV_SERIES",
+        "limit": 50
+    })
+
+    return render(request, "main/series.html", {
+        "best": get_random(best),
+        "popular": get_random(popular),
+        "randoms": get_random(randoms),
     })
 # Create your views here.

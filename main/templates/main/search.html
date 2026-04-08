@@ -13,10 +13,10 @@
                     <a href="/" class="nav-link text-white">Home</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-white">Movies</a>
+                    <a href="/movies/" class="nav-link text-white">Movies</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-white">Series</a>
+                    <a href="/series/" class="nav-link text-white">TV Series</a>
                 </li>
             </ul>
         </div>
@@ -55,7 +55,7 @@
                         <div class="card bg-dark text-white h-100">
 
                             <div class="card-body">
-
+                                <img src="{{ movie.primaryImage.url }}" class="card-img-top">
                                 <h5>{{ movie.primaryTitle }}</h5>
 
                                 <p>{{ movie.startYear }}</p>
