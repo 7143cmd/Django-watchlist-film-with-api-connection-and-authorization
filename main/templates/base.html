@@ -9,8 +9,36 @@
     <link rel="stylesheet" href="{% static 'style.css' %}">
 
     <link rel="icon" href="{% static 'favicon.ico' %}">
+
 </head>
 <body>
-{% block content %}{% endblock %}
+<div class="d-flex">
+
+    <!-- SIDEBAR -->
+    <div class="bg-dark text-white p-3" style="width: 220px; min-height: 100vh;">
+        <h4>Menu</h4>
+        <ul class="nav flat-column">
+            <a href="#" class="nav-link text-light">👤 My Profile</a>
+            <li class="nav-item">
+                <a href="/random" class="nav-link text-light">🎲 Random Movie</a>
+            </li>
+            <li class="nav-item">
+                <a href="/movies/" class="nav-link text-white">🎬 Movies</a>
+            </li>
+            <li class="nav-item">
+                <a href="/series/" class="nav-link text-white">📺 Series</a>
+            </li>
+            <li class="nav-item">
+                <a href="/" class="nav-link text-light">↩️ Main Page</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="flex-grow-1 p-3">
+        {% block content %}{% endblock %}
+    </div>
+
+</div>
 </body>
 </html>
