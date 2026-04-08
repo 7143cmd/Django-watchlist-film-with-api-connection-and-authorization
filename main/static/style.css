@@ -37,3 +37,8 @@ body {
 .nav-link:hover {
     color: #0d6efd !important;
 }
+
+.card {
+    background-color: #1c1c1c !important;
+    color: white !important;
+}
