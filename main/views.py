@@ -1,8 +1,10 @@
 import requests
+from django.http import JsonResponse
 from random import randint, choice, sample
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
+from .models import Watchlist
 from .forms import RegisterForm, LoginForm
 
 API_URL = "https://api.imdbapi.dev/titles"
@@ -179,4 +181,29 @@ def series(request):
         "popular": get_random(popular),
         "randoms": get_random(randoms),
     })
+
+@login_required
+def add_to_watchlist(request):
+    if request.method == "POST":
+        movie_id = request.POST.get("movie_id")
+
+        if not movie_id:
+            return JsonResponse({"status": "error"})
+
+        exists = Watchlist.objects.filter(
+            user=request.user,
+            movie=movie_id
+        ).exists()
+
+        if exists:
+            return JsonResponse({"status": "exists"})
+
+        Watchlist.objects.create(
+            user=request.user,
+            movie=movie_id
+        )
+
+        return JsonResponse({"status": "success"})
+
+    return JsonResponse({"status": "error"})
 # Create your views here.

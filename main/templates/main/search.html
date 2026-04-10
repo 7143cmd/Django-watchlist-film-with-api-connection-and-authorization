@@ -55,7 +55,10 @@
                                         Details
                                     </a>
 
-                                    <button class="btn btn-outline-warning btn-sm">
+                                    <button 
+                                        class="btn btn-outline-warning btn-sm add-to-watchlist"
+                                        data-movie-id="{{ movie.id }}"
+                                    >
                                         🔖
                                     </button>
                                 </div>
@@ -72,4 +75,47 @@
     </div>
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            document.cookie.split(';').forEach(cookie => {
+                const [key, value] = cookie.trim().split('=');
+                if (key === name) cookieValue = decodeURIComponent(value);
+            });
+        }
+        return cookieValue;
+    }
+
+    document.querySelectorAll('.add-to-watchlist').forEach(button => {
+        button.addEventListener('click', function () {
+
+            const movieId = this.dataset.movieId;
+
+            fetch("{% url 'add_to_watchlist' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: new URLSearchParams({
+                    movie_id: movieId
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("Added");
+                } else if (data.status === "exists") {
+                    alert("Already added");
+                } else {
+                    alert("Error");
+                }
+            });
+        });
+    });
+
+});
+</script>
 {% endblock %}
