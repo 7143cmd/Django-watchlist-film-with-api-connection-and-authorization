@@ -123,9 +123,12 @@ def search_mov(request, query):
         except Exception:
             results = []
 
+    user_watchlist = Watchlist.objects.filter(user=request.user).values_list('movie', flat=True)
+
     return render(request, 'main/search.html', {
         'results': results,
-        'query': query
+        'query': query,
+        "watchlist_ids": list(user_watchlist)
     })
 
 @login_required
@@ -150,10 +153,13 @@ def movies(request):
         "limit": 50
     })
 
+    user_watchlist = Watchlist.objects.filter(user=request.user).values_list('movie', flat=True)
+
     return render(request, "main/movies.html", {
         "best": get_random(best),
         "popular": get_random(popular),
         "randoms": get_random(randoms),
+        "watchlist_ids": list(user_watchlist)
     })
 
 @login_required
@@ -176,10 +182,13 @@ def series(request):
         "limit": 50
     })
 
+    user_watchlist = Watchlist.objects.filter(user=request.user).values_list('movie', flat=True)
+
     return render(request, "main/series.html", {
         "best": get_random(best),
         "popular": get_random(popular),
         "randoms": get_random(randoms),
+        "watchlist_ids": list(user_watchlist)
     })
 
 @login_required
@@ -190,20 +199,21 @@ def add_to_watchlist(request):
         if not movie_id:
             return JsonResponse({"status": "error"})
 
-        exists = Watchlist.objects.filter(
+        obj = Watchlist.objects.filter(
             user=request.user,
             movie=movie_id
-        ).exists()
+        ).first()
 
-        if exists:
-            return JsonResponse({"status": "exists"})
+        if obj:
+            obj.delete()
+            return JsonResponse({"status": "removed"})
 
         Watchlist.objects.create(
             user=request.user,
             movie=movie_id
         )
 
-        return JsonResponse({"status": "success"})
+        return JsonResponse({"status": "added"})
 
     return JsonResponse({"status": "error"})
 # Create your views here.

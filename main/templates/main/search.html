@@ -59,7 +59,11 @@
                                         class="btn btn-outline-warning btn-sm add-to-watchlist"
                                         data-movie-id="{{ movie.id }}"
                                     >
-                                        🔖
+                                        {% if movie.id in watchlist_ids %}
+                                            ✅
+                                        {% else %}
+                                            🔖
+                                        {% endif %}
                                     </button>
                                 </div>
 
@@ -105,13 +109,17 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(res => res.json())
             .then(data => {
-                if (data.status === "success") {
-                    alert("Added");
-                } else if (data.status === "exists") {
-                    alert("Already added");
-                } else {
+
+                if (data.status === "added") {
+                    this.innerText = "✅";
+                } 
+                else if (data.status === "removed") {
+                    this.innerText = "🔖";
+                } 
+                else {
                     alert("Error");
                 }
+
             });
         });
     });
