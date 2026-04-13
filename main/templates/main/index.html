@@ -32,7 +32,17 @@
                 </script>
 
                 <div class="text-right pr-5">
-                    <h3 class="mb-0">Watchlist</h3>
+                    <h3 class="mb-0">Latest movies from Watchlist</h3>
+
+                    {% if watchlist %}
+                        <ul>
+                            {% for item in watchlist %}
+                                <li>{{ item.movie.title }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No movies yet</p>
+                    {% endif %}
                 </div>
 
             </div>

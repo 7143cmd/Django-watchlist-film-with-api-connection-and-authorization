@@ -42,3 +42,8 @@ body {
     background-color: #1c1c1c !important;
     color: white !important;
 }
+
+p, h2, h3, h4, li {
+    opacity: 1;
+    color: white; /* или black, зависит от темы */
+}

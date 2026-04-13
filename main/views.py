@@ -29,7 +29,15 @@ def get_random(items, cnt=4):
 ######
 @login_required(login_url='login')
 def home(request):
-    return render(request, 'main/index.html')
+
+    if request.user.is_authenticated:
+        watchlist = Watchlist.objects.filter(user=request.user)
+    else:
+        watchlist = []
+
+    return render(request, 'main/index.html', {
+        'watchlist': watchlist
+    })
 
 def register(request):
     if request.method == 'POST':
@@ -216,4 +224,15 @@ def add_to_watchlist(request):
         return JsonResponse({"status": "added"})
 
     return JsonResponse({"status": "error"})
+
+@login_required
+def profile(request):
+
+    watchlist = Watchlist.objects.filter(user=request.user)
+
+    content = {
+        'user': request.user,
+        'watchlist': watchlist
+    }
+    return render(request, 'main/profile.html', content)
 # Create your views here.

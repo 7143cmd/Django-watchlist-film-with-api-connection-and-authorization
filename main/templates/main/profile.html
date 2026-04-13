@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h2>Profile</h2>
+
+<h3><strong>Username:</strong> {{ user.username }}</h3>
+<h4><strong>Email:</strong> {{ user.email }}</h4>
+
+<h3>Your Watchlist</h3>
+
+
+<p>Total: {{ watchlist|length }}</p>
+
+{% if watchlist %}
+    <ul>
+        {% for item in watchlist %}
+            <li>
+                {{ item.movie }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Your watchlist is empty</p>
+{% endif %}
+
+{% endblock %}
