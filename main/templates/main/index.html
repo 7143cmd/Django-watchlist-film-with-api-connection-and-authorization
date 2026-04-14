@@ -34,15 +34,40 @@
                 <div class="text-right pr-5">
                     <h3 class="mb-0">Latest movies from Watchlist</h3>
 
-                    {% if watchlist %}
-                        <ul>
-                            {% for item in watchlist %}
-                                <li>{{ item.movie.title }}</li>
-                            {% endfor %}
+                    
+                        <ul class="list-unstyled mt-3">
+                            
+                                {% for item in watchlist %}
+                                    <li class="mb-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+
+                                            <img src="{{ item.image }}" width="100">
+
+                                            <span>{{ item.title }}</span>
+
+                                            <div>
+                                                <a href="https://www.imdb.com/title/{{ item.id }}/" 
+                                                target="_blank"
+                                                class="btn btn-outline-light btn-sm">
+                                                    Details
+                                                </a>
+
+                                                <button 
+                                                    class="btn btn-outline-warning btn-sm add-to-watchlist"
+                                                    data-movie-id="{{ item.id }}"
+                                                >
+                                                    {% if item.id in watchlist_ids %}
+                                                        ✅
+                                                    {% else %}
+                                                        🔖
+                                                    {% endif %}
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                {% endfor %}
                         </ul>
-                    {% else %}
-                        <p>No movies yet</p>
-                    {% endif %}
                 </div>
 
             </div>
@@ -56,4 +81,51 @@
     </div>
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            document.cookie.split(';').forEach(cookie => {
+                const [key, value] = cookie.trim().split('=');
+                if (key === name) cookieValue = decodeURIComponent(value);
+            });
+        }
+        return cookieValue;
+    }
+
+    document.querySelectorAll('.add-to-watchlist').forEach(button => {
+        button.addEventListener('click', function () {
+
+            const movieId = this.dataset.movieId;
+
+            fetch("{% url 'add_to_watchlist' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: new URLSearchParams({
+                    movie_id: movieId
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                if (data.status === "added") {
+                    this.innerText = "✅";
+                } 
+                else if (data.status === "removed") {
+                    this.innerText = "🔖";
+                } 
+                else {
+                    alert("Error");
+                }
+
+            });
+        });
+    });
+
+});
+</script>
 {% endblock %}

@@ -29,14 +29,24 @@ def get_random(items, cnt=4):
 ######
 @login_required(login_url='login')
 def home(request):
+    watchlist = Watchlist.objects.filter(user=request.user).order_by('-date_added')[:5]
 
-    if request.user.is_authenticated:
-        watchlist = Watchlist.objects.filter(user=request.user)
-    else:
-        watchlist = []
+    movies = []
+
+    for item in watchlist:
+        url = f"https://api.imdbapi.dev/titles/{item.movie}"
+        response = requests.get(url)
+        data = response.json()
+
+        movies.append({
+            "id": item.movie,
+            "title": data.get("primaryTitle"),
+            "image": data.get("primaryImage", {}).get("url")
+        })
 
     return render(request, 'main/index.html', {
-        'watchlist': watchlist
+        "watchlist": movies,
+        "watchlist_ids": [m["id"] for m in movies]
     })
 
 def register(request):
@@ -102,7 +112,7 @@ def rand_movie(request):                       #https://api.imdbapi.dev/titles?s
 
     return redirect(f'https://www.imdb.com/title/{imdb_id}')
 
-@login_required
+@login_required(login_url='login')
 def search_mov(request, query):
     results = []
 
@@ -139,7 +149,7 @@ def search_mov(request, query):
         "watchlist_ids": list(user_watchlist)
     })
 
-@login_required
+@login_required(login_url='login')
 def movies(request):
 
     best = get_titles({
@@ -170,7 +180,7 @@ def movies(request):
         "watchlist_ids": list(user_watchlist)
     })
 
-@login_required
+@login_required(login_url='login')
 def series(request):
     best = get_titles({
         "minAggregateRating": 9.2,
@@ -225,14 +235,31 @@ def add_to_watchlist(request):
 
     return JsonResponse({"status": "error"})
 
-@login_required
+@login_required(login_url='login')
 def profile(request):
 
-    watchlist = Watchlist.objects.filter(user=request.user)
+    watchlist_qs = Watchlist.objects.filter(
+        user=request.user
+    ).order_by('-date_added')
+
+    movies = []
+
+    for item in watchlist_qs:
+        url = f"https://api.imdbapi.dev/titles/{item.movie}"
+        response = requests.get(url)
+        data = response.json()
+
+        movies.append({
+            "id": item.movie,
+            "title": data.get("primaryTitle"),
+            "image": data.get("primaryImage", {}).get("url")
+        })
 
     content = {
         'user': request.user,
-        'watchlist': watchlist
+        'watchlist': movies,
+        'watchlist_ids': [m["id"] for m in movies]
     }
+
     return render(request, 'main/profile.html', content)
 # Create your views here.
