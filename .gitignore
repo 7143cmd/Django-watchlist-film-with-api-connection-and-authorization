@@ -3,3 +3,5 @@ test.txt
 main/__pycache__
 migrations/__pycache__/
 venv/
+.venv
+new_project/__pycache__
